@@ -1,15 +1,15 @@
 var WINDOW_WIDTH = document.body.clientWidth
-var WINDOW_HEIGHT = document.body.clientHeight - 4
-var RADIUS = 8
-var MARGIN_TOP = 120
-var MARGIN_LEFT = 30
-var endTime = new Date(2017, 5, 27, 18, 46, 36)
+var WINDOW_HEIGHT = document.body.clientHeight
+var RADIUS = Math.round(WINDOW_WIDTH * 4 / 5 / 108) - 1
+var MARGIN_TOP = WINDOW_HEIGHT / 5
+var MARGIN_LEFT = Math.round(WINDOW_WIDTH / 10)
+
+var endTime = new Date(+new Date() + 3600000)
 var curShowTimeSeconds = 0
 var balls = []
 var colors = ['#33B5E5', '#0099CC', '#AA66CC', '#9933CC', '#99CC00', '#669900', '#FFBB33', '#FF8800', '#FF4444', '#CC0000']
 var canvasEl = document.getElementById('canvas')
 var ctx = canvasEl.getContext('2d')
-
 canvasEl.width = WINDOW_WIDTH
 canvasEl.height = WINDOW_HEIGHT
 
@@ -20,6 +20,16 @@ setInterval(function () {
   render(ctx)
   update()
 }, 50)
+
+window.onresize = function () {
+  WINDOW_WIDTH = document.body.clientWidth
+  WINDOW_HEIGHT = document.body.clientHeight
+  RADIUS = Math.round(WINDOW_WIDTH * 4 / 5 / 108) - 1
+  MARGIN_TOP = WINDOW_HEIGHT / 5
+  MARGIN_LEFT = Math.round(WINDOW_WIDTH / 10)
+  canvasEl.width = WINDOW_WIDTH
+  canvasEl.height = WINDOW_HEIGHT
+}
 
 function update () {
   var nextShowTimeSeconds = getCurrentShowTimeSeconds()
@@ -60,10 +70,16 @@ function update () {
 }
 
 function getCurrentShowTimeSeconds () {
+  // 倒计时效果
   var curTime = new Date()
   var ret = endTime.getTime() - curTime
   ret = Math.round(ret / 1000)
   return ret >= 0 ? ret : 0
+
+  // 时钟效果
+  // var curTime = new Date()
+  // var ret = curTime.getHours() * 3600 + curTime.getMinutes() * 60 + curTime.getSeconds()
+  // return ret
 }
 
 function render (ctx) {
